@@ -1,0 +1,61 @@
+header {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+@media screen and (max-width: 1460px) {
+    .px-52 {
+        padding-left: 5rem !important;
+        padding-right: 5rem !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    header div.flex.items-center.gap-3:last-of-type {
+        flex-wrap: wrap !important;
+    }
+    footer {
+        gap: 1rem;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    header button {
+        font-size: 0.7rem
+    }
+
+    header div.flex.items-center.gap-3:first-of-type p {
+        display: none;
+    }
+
+    header div.px-52 {
+        gap: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .px-52 {
+        padding-left: 2.5rem !important;
+        padding-right: 2.5rem !important;
+    }
+
+    footer {
+        flex-wrap: wrap;
+    }
+    footer div.w-1\/4 {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    header div.w-full.bg-\[\#0f172b\].py-2.px-52.flex.items-center.justify-between.font-bold {
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    #modal_dialog_callback {
+        width: 50% !important;
+    }
+}

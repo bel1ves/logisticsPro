@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../primeicons.css">
+    <script src="../tailwind.js"></script>
+    <link rel="stylesheet" href="../toastr.min.css">
+</head>
+<body>
+<div class="w-full h-full fixed backdrop-blur-xs bg-black/20 z-10 transition-all hidden opacity-0" id="modal_callback">
+    <div class="w-1/4 bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 transition-transform scale-50" id="modal_dialog_callback">
+        <i class="pi pi-times text-xl absolute top-6 right-6 text-gray-500 hover:text-gray-700 transition-colors cursor-pointer" onclick="closeModalCallback()"></i>
+        <div class="w-full h-full flex flex-col gap-3">
+            <div class="flex gap-3 items-center">
+                <span class="size-10 flex justify-center items-center rounded-lg bg-[#dbeafe]"><i
+                    class="pi pi-phone text-[#155dfc] text-2xl"></i> </span>
+                <p>Заказать звонок</p>
+            </div>
+            <p class="text-gray-500 text-sm">Оставьте свои контакты, и наш менеджер свяжется с вами в течение 15 минут</p>
+            <form action="#" class="gap-3 flex flex-col" onsubmit="submitFormCallback(event)">
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="name" class="text-sm font-semibold">Ваше имя</label>
+                    <input required type="text" id="name" placeholder="Введите ваше имя и фамилию" class="block w-full rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                </div>
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="phone" class="text-sm font-semibold">Номер телефона</label>
+                    <input required type="text" id="phone" placeholder="+7 (___) ___-__-__" class="block w-full rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                </div>
+                <label for="call_time" class="text-sm font-semibold">Удобное время для звонка</label>
+                <select required id="call_time" class="block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                    <option value="0" selected>Выберите время</option>
+                    <option value="automobile">Утро (09:00-12:00)</option>
+                    <option value="railway">День (12:00-15:00)</option>
+                    <option value="avia">Вечер (15:00-18:00)</option>
+                    <option value="multimodal">Поздний вечер (18:00-21:00)</option>
+                </select>
+                <div class="flex items-center gap-3 mt-4">
+                    <button class="w-full hover:bg-[#1447e6] bg-[#3862e6] text-white font-semibold rounded-lg text-sm h-10 block transition-colors">Заказать звонок</button>
+                    <button class="w-full hover:bg-gray-100 text-black bg-white border-1 border-gray-300 font-semibold rounded-lg text-sm h-10 block transition-colors">Отмена</button>
+                </div>
+                <hr class="w-full border-gray-300"/>
+                <p class="text-xs text-gray-400">Нажимая кнопку, вы соглашаетесь с <span class="text-blue-400 hover:underline cursor-pointer">политикой конфиденциальности</span></p>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="bg-black/20 z-10 backdrop-blur-xs fixed top-0 left-0 w-full h-full transition-all hidden opacity-0" id="modal">
+    <div class="w-1/4 bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 transition-transform scale-50" id="modal_dialog">
+        <i class="pi pi-times text-xl absolute top-6 right-6 text-gray-500 hover:text-gray-700 transition-colors cursor-pointer" onclick="closeModal()"></i>
+        <div class="flex flex-col gap-3  h-full">
+            <div class="flex flex-col gap-1">
+                <h3 class="text-xl font-semibold">Отклик на вакансию</h3>
+                <p class="text-gray-500 text-sm" id="vacancy_name">Менеджер по логистике</p>
+            </div>
+            <form action="#" class="flex flex-col gap-3" onsubmit="sendForm(event)">
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="name" class="text-sm font-semibold">Ваше имя</label>
+                    <input type="text" id="name" placeholder="Введите ваше имя" class="block w-full rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                </div>
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="email" class="text-sm font-semibold">Email</label>
+                    <input type="email" id="email" placeholder="Введите ваш email" class="block w-full rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                </div>
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="phone" class="text-sm font-semibold">Телефон</label>
+                    <input type="text" id="phone" placeholder="Введите ваш телефон" class="block w-full rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                </div>
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="message" class="text-sm font-semibold">Сопроводительное письмо</label>
+                    <textarea required id="message" placeholder="Расскажите о себе и своем опыте" class="block w-full rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"></textarea>
+                </div>
+                <button class="w-full hover:bg-[#1447e6] bg-[#3862e6] text-white font-bold rounded-lg text-sm h-10 block transition-colors">Отправить резюме</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<header>
+    <div class="w-full bg-[#0f172b] py-2 px-52 flex items-center justify-between font-bold">
+        <div class="flex gap-5 items-center">
+            <a href="tel:84951234567" class="text-white hover:text-[#51a2ff] transition-colors"><span
+                    class="pi pi-phone size-5"></span> +7 (495) 123-45-67</a>
+            <a href="mailto:info@logistic.ru" class="text-white hover:text-[#51a2ff] transition-colors"><span
+                    class="pi pi-envelope size-5"></span> info@logistic.ru</a>
+        </div>
+        <p class="text-white">Работаем 24/7</p>
+    </div>
+    <div class="px-52 py-4 flex items-center justify-between">
+        <div class=" flex items-center gap-3">
+            <span class="size-12 flex justify-center items-center rounded-sm bg-[#155dfc]"><i class="pi pi-bolt text-white text-2xl"></i></span>
+            <p>ЛогистикПро <br/>
+                Перевозки по всей России и СНГ</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="/logisticsPro/" class="hover:text-[#8db0fe] transition-colors">Главная</a>
+            <a href="/logisticsPro/pages/abous_us.html" class="hover:text-[#8db0fe] transition-colors">О компании</a>
+            <a href="/logisticsPro/pages/services.html" class="hover:text-[#8db0fe] transition-colors">Услуги</a>
+            <a href="/logisticsPro/pages/price_calculator.html" class="hover:text-[#8db0fe] transition-colors">Расчет стоимости</a>
+            <a href="/logisticsPro/pages/news.html" class="hover:text-[#8db0fe] transition-colors">Новости</a>
+            <a href="/logisticsPro/pages/vacancies.html" class="hover:text-[#8db0fe] transition-colors">Вакансии</a>
+            <a href="/logisticsPro/pages/contacts.html" class="hover:text-[#8db0fe] transition-colors">Контакты</a>
+        </div>
+        <button class="w-36 h-9 bg-[#3862e6] font-bold text-white hover:bg-[#1447e6] transition-colors rounded-lg text-sm" onclick="openModalCallback()">Заказать звонок</button>
+    </div>
+</header>
+<main>
+    <h1 class="text-2xl font-bold text-center m-5">Вакансии</h1>
+    <p class="text-gray-700 w-2/5 text-center m-auto mb-5">Присоединяйтесь к нашей команде профессионалов. Мы предлагаем стабильную работу, достойную заработную плату и возможности для развития.</p>
+    <div class="flex gap-4 flex-wrap px-52 py-5">
+        <div class="flex flex-col gap-5 w-[calc(33%_-_1rem)] max-[900px]:w-[calc(50%_-_1rem)] max-[700px]:w-full items-start rounded-xl border-1 border-gray-300 px-8 py-6 transition-shadow">
+            <p>Водитель-экспедитор категории CE</p>
+            <div class="flex flex-col gap-2 text-sm text-gray-500">
+                <p ><i class="pi pi-map-marker"></i> Москва</p>
+                <p ><i class="pi pi-briefcase"></i> Полная занятость</p>
+                <p ><i class="pi pi-wallet"></i> от 80 000 ₽</p>
+            </div>
+            <p class="text-gray-500">Требуется опытный водитель-экспедитор для международных перевозок. Опыт работы от 3 лет.</p>
+            <p>Требования:</p>
+            <ul class="marker:text-[#155dfc] list-disc text-gray-500 text-sm ml-3 marker:text-lg">
+                <li>Права категории CE</li>
+                <li>Опыт работы от 3 лет</li>
+                <li>Знание международных маршрутов</li>
+                <li>Ответственность и пунктуальность</li>
+            </ul>
+            <button class="bg-[#155dfc] text-white hover:bg-[#1447e6] transition-colors rounded-lg px-4 py-2 text-sm w-full cursor-pointer" onclick="openModal('Водитель-экспедитор категории CE')">Откликнуться</button>
+        </div>
+        <div class="flex flex-col gap-5 w-[calc(33%_-_1rem)] max-[900px]:w-[calc(50%_-_1rem)] max-[700px]:w-full items-start rounded-xl border-1 border-gray-300 px-8 py-6 transition-shadow">
+            <p>Менеджер по логистике</p>
+            <div class="flex flex-col gap-2 text-sm text-gray-500">
+                <p ><i class="pi pi-map-marker"></i> Москва</p>
+                <p ><i class="pi pi-briefcase"></i> Полная занятость</p>
+                <p ><i class="pi pi-wallet"></i> от 70 000 ₽</p>
+            </div>
+            <p class="text-gray-500">В отдел логистики требуется менеджер для организации грузоперевозок.</p>
+            <p>Требования:</p>
+            <ul class="marker:text-[#155dfc] list-disc text-gray-500 text-sm ml-3 marker:text-lg">
+                <li>Опыт работы в логистике от 2 лет</li>
+                <li>Знание 1С и специализированных программ</li>
+                <li>Навыки ведения переговоров</li>
+                <li>Ответственность и внимательность</li>
+            </ul>
+            <button class="bg-[#155dfc] text-white hover:bg-[#1447e6] transition-colors rounded-lg px-4 py-2 text-sm w-full cursor-pointer" onclick="openModal('Менеджер по логистике')">Откликнуться</button>
+        </div>
+        <div class="flex flex-col gap-5 w-[calc(33%_-_1rem)] max-[900px]:w-[calc(50%_-_1rem)] max-[700px]:w-full items-start rounded-xl border-1 border-gray-300 px-8 py-6 transition-shadow">
+            <p>Складской работник</p>
+            <div class="flex flex-col gap-2 text-sm text-gray-500">
+                <p ><i class="pi pi-map-marker"></i> Санкт-Петербург</p>
+                <p ><i class="pi pi-briefcase"></i> Полная занятость</p>
+                <p ><i class="pi pi-wallet"></i> от 50 000 ₽</p>
+            </div>
+            <p class="text-gray-500">На склад требуется ответственный работник для приема, размещения и отгрузки товаров.</p>
+            <p>Требования:</p>
+            <ul class="marker:text-[#155dfc] list-disc text-gray-500 text-sm ml-3 marker:text-lg">
+                <li>Опыт работы на складе приветствуется</li>
+                <li>Физическая выносливость</li>
+                <li>Внимательность</li>
+                <li>Готовность к сменному графику</li>
+            </ul>
+            <button class="bg-[#155dfc] text-white hover:bg-[#1447e6] transition-colors rounded-lg px-4 py-2 text-sm w-full cursor-pointer" onclick="openModal('Складской работник')">Откликнуться</button>
+        </div>
+        <div class="flex flex-col gap-5 w-[calc(33%_-_1rem)] max-[900px]:w-[calc(50%_-_1rem)] max-[700px]:w-full items-start rounded-xl border-1 border-gray-300 px-8 py-6 transition-shadow">
+            <p>Специалист по таможенному оформлению</p>
+            <div class="flex flex-col gap-2 text-sm text-gray-500">
+                <p ><i class="pi pi-map-marker"></i> Москва</p>
+                <p ><i class="pi pi-briefcase"></i> Полная занятость</p>
+                <p ><i class="pi pi-wallet"></i> от 90 000 ₽</p>
+            </div>
+            <p class="text-gray-500">Требуется специалист для оформления таможенных деклараций и сопутствующих документов.</p>
+            <p>Требования:</p>
+            <ul class="marker:text-[#155dfc] list-disc text-gray-500 text-sm ml-3 marker:text-lg">
+                <li>Высшее образование</li>
+                <li>Опыт работы от 2 лет</li>
+                <li>Знание таможенного законодательства</li>
+                <li>Опыт работы в системе ЕАИС</li>
+            </ul>
+            <button class="bg-[#155dfc] text-white hover:bg-[#1447e6] transition-colors rounded-lg px-4 py-2 text-sm w-full cursor-pointer" onclick="openModal('Специалист по таможенному оформлению')">Откликнуться</button>
+        </div>
+        <div class="flex flex-col gap-5 w-[calc(33%_-_1rem)] max-[900px]:w-[calc(50%_-_1rem)] max-[700px]:w-full items-start rounded-xl border-1 border-gray-300 px-8 py-6 transition-shadow">
+            <p>Диспетчер грузоперевозок</p>
+            <div class="flex flex-col gap-2 text-sm text-gray-500">
+                <p ><i class="pi pi-map-marker"></i> Москва</p>
+                <p ><i class="pi pi-briefcase"></i> Полная занятость</p>
+                <p ><i class="pi pi-wallet"></i> от 60 000 ₽</p>
+            </div>
+            <p class="text-gray-500">В диспетчерскую службу требуется опытный специалист для координации работы водителей.</p>
+            <p>Требования:</p>
+            <ul class="marker:text-[#155dfc] list-disc text-gray-500 text-sm ml-3 marker:text-lg">
+                <li>Опыт работы диспетчером от 1 года</li>
+                <li>Знание географии России</li>
+                <li>Грамотная речь</li>
+                <li>Стрессоустойчивость</li>
+            </ul>
+            <button class="bg-[#155dfc] text-white hover:bg-[#1447e6] transition-colors rounded-lg px-4 py-2 text-sm w-full cursor-pointer" onclick="openModal('Диспетчер грузоперевозок')">Откликнуться</button>
+        </div>
+        <div class="flex flex-col gap-5 w-[calc(33%_-_1rem)] max-[900px]:w-[calc(50%_-_1rem)] max-[700px]:w-full items-start rounded-xl border-1 border-gray-300 px-8 py-6 transition-shadow">
+            <p>Водитель погрузчика</p>
+            <div class="flex flex-col gap-2 text-sm text-gray-500">
+                <p ><i class="pi pi-map-marker"></i> Казань</p>
+                <p ><i class="pi pi-briefcase"></i> Полная занятость</p>
+                <p ><i class="pi pi-wallet"></i> от 55 000 ₽</p>
+            </div>
+            <p class="text-gray-500">На склад требуется водитель погрузчика для выполнения погрузочно-разгрузочных работ.</p>
+            <p>Требования:</p>
+            <ul class="marker:text-[#155dfc] list-disc text-gray-500 text-sm ml-3 marker:text-lg">
+                <li>Удостоверение машиниста погрузчика</li>
+                <li>Опыт работы от 1 года</li>
+                <li>Ответственность</li>
+                <li>Готовность к сменному графику</li>
+            </ul>
+            <button class="bg-[#155dfc] text-white hover:bg-[#1447e6] transition-colors rounded-lg px-4 py-2 text-sm w-full cursor-pointer" onclick="openModal('Водитель погрузчика')">Откликнуться</button>
+        </div>
+    </div>
+</main>
+<footer class="bg-[#0f172b] text-white px-52 py-10 flex items-start justify-between">
+    <div class="w-1/4 flex flex-col gap-5">
+        <h3 class="font-bold text-lg">ЛогистикПро</h3>
+        <p class="text-gray-400">Ведущая компания в сфере грузоперевозок и логистики на территории РФ и СНГ с 2010 года.</p>
+        <div class="flex gap-3 items-center">
+            <a href="https://facebook.com" class="text-white hover:text-[#51a2ff] transition-colors"><i class="pi pi-facebook"></i></a>
+            <a href="https://twitter.com" class="text-white hover:text-[#51a2ff] transition-colors"><i class="pi pi-twitter"></i></a>
+            <a href="https://linkedin.com" class="text-white hover:text-[#51a2ff] transition-colors"><i class="pi pi-linkedin"></i></a>
+        </div>
+    </div>
+    <div class="flex flex-col gap-5 w-1/4">
+        <p>Услуги</p>
+        <div class="flex gap-2 flex-col text-gray-400">
+            <a href="/logisticsPro/pages/services.html" class="hover:text-white transition-colors">Автоперевозки</a>
+            <a href="/logisticsPro/pages/services.html" class="hover:text-white transition-colors">Железнодорожные перевозки</a>
+            <a href="/logisticsPro/pages/services.html" class="hover:text-white transition-colors">Складская логистика</a>
+            <a href="/logisticsPro/pages/services.html" class="hover:text-white transition-colors">Экспедирование</a>
+            <a href="/logisticsPro/pages/services.html" class="hover:text-white transition-colors">Таможенное оформление</a>
+        </div>
+    </div>
+    <div class="flex flex-col gap-5 w-1/4">
+        <p>Контакты</p>
+        <div class="flex gap-2 flex-col text-gray-400">
+            <p class="flex gap-2 items-center"><i class="pi pi-map-marker text-gray-400"></i>г. Москва, ул. Примерная, д. 123, офис 45</p>
+            <p class="hover:text-white transition-colors flex gap-2 items-center"><i class="pi pi-phone text-gray-400"></i>+7 (495) 123-45-67</p>
+            <p class="hover:text-white transition-colors flex gap-2 items-center"><i class="pi pi-envelope text-gray-400"></i>info@logistic.ru</p>
+        </div>
+    </div>
+    <div class="w-1/4 flex flex-col gap-5">
+        <h3 class="font-bold text-lg">Режим работы</h3>
+        <p class="text-gray-400">Понедельник - Пятница: 24/7 <br/> Суббота - Воскресенье: 9:00-18:00</p>
+        <p class="text-[#155dfc]">Круглосуточная поддержка</p>
+    </div>
+</footer>
+<script src="../jquery.js"></script>
+<script src="../toastr.js" type="text/javascript"></script>
+<script>
+    function submitFormCallback(e) {
+        e.preventDefault();
+        toastr.success('Ваша заявка отправлена');
+        $('#modal_callback').addClass('opacity-0');
+        $('#modal_dialog_callback').addClass('scale-50');
+        setTimeout(() => {
+            $('#modal_callback').addClass('hidden');
+        }, 150);
+    }
+
+    function closeModalCallback() {
+        $('#modal_callback').addClass('opacity-0');
+        $('#modal_dialog_callback').addClass('scale-50');
+        setTimeout(() => {
+            $('#modal_callback').addClass('hidden');
+        }, 150);
+    }
+
+    function openModalCallback() {
+        $('#modal_callback').removeClass('hidden')
+        setTimeout(() => {
+            $('#modal_callback').removeClass('opacity-0')
+            $('#modal_dialog_callback').removeClass('scale-50');
+        }, 10)
+    }
+</script>
+<script>
+    function sendForm(e) {
+        e.preventDefault();
+        toastr.success('Ваше резюме отправлено');
+    }
+
+    function closeModal() {
+        $('#modal').addClass('opacity-0');
+        $('#modal_dialog').addClass('scale-50');
+        setTimeout(() => {
+            $('#modal').addClass('hidden');
+        }, 150);
+    }
+
+    function openModal(name) {
+        $('#modal').removeClass('hidden')
+        setTimeout(() => {
+            $('#modal').removeClass('opacity-0')
+            $('#modal_dialog').removeClass('scale-50');
+        }, 10)
+
+        $('#vacancy_name').text(name)
+    }
+</script>
+</body>
+</html>
